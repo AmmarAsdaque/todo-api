@@ -30,3 +30,9 @@ def test_list_filter_done(client):
     client.patch(f"/tasks/{a['id']}", json={"done": True})
     r = client.get("/tasks", params={"done": "true"})
     assert [t["title"] for t in r.json()] == ["A"]
+
+
+def test_invalid_priority_returns_400(client):
+    r = client.post("/tasks", json={"title": "A", "priority": 5})
+    assert r.status_code == 400
+    assert r.json() == {"error": "invalid_priority", "field": "priority"}
