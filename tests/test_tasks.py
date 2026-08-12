@@ -36,3 +36,19 @@ def test_invalid_priority_returns_400(client):
     r = client.post("/tasks", json={"title": "A", "priority": 5})
     assert r.status_code == 400
     assert r.json() == {"error": "invalid_priority", "field": "priority"}
+
+
+def test_patch_title(client, task):
+    r = client.patch(f"/tasks/{task['id']}", json={"title": "Buy oat milk"})
+    assert r.status_code == 200
+    assert r.json()["title"] == "Buy oat milk"
+
+
+def test_patch_done(client, task):
+    r = client.patch(f"/tasks/{task['id']}", json={"done": True})
+    assert r.json()["done"] is True
+
+
+def test_patch_priority(client, task):
+    r = client.patch(f"/tasks/{task['id']}", json={"priority": 1})
+    assert r.json()["priority"] == 1
