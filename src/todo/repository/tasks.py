@@ -28,12 +28,15 @@ def get(conn, task_id):
     return to_task(row)
 
 
-def select(conn, done=None):
+def select(conn, done=None, q=None):
     sql = f"SELECT {COLUMNS} FROM tasks"
     where, params = [], []
     if done is not None:
         where.append("done = ?")
         params.append(int(done))
+    if q:
+        where.append("title LIKE ?")
+        params.append(f"%{q}%")
     if where:
         sql += " WHERE " + " AND ".join(where)
     sql += " ORDER BY id"

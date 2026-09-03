@@ -14,8 +14,8 @@ def get_task(conn, task_id):
     return repository.get(conn, task_id)
 
 
-def list_tasks(conn, done=None):
-    return repository.select(conn, done=done)
+def list_tasks(conn, done=None, q=None):
+    return repository.select(conn, done=done, q=q)
 
 
 def update_task(conn, task_id, fields):
