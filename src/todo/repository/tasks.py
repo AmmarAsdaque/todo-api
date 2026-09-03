@@ -35,8 +35,8 @@ def select(conn, done=None, q=None):
         where.append("done = ?")
         params.append(int(done))
     if q:
-        where.append("instr(title, ?) > 0")
-        params.append(q)
+        where.append("title LIKE ?")
+        params.append(f"%{q}%")
     if where:
         sql += " WHERE " + " AND ".join(where)
     sql += " ORDER BY id"

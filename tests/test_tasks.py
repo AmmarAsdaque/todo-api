@@ -59,3 +59,9 @@ def test_search_by_title(client):
     client.post("/tasks", json={"title": "Pay rent"})
     r = client.get("/tasks", params={"q": "milk"})
     assert [t["title"] for t in r.json()] == ["Buy milk"]
+
+
+def test_search_ignores_case(client):
+    client.post("/tasks", json={"title": "Buy Milk"})
+    r = client.get("/tasks", params={"q": "MILK"})
+    assert len(r.json()) == 1
