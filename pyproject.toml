@@ -1,6 +1,6 @@
 [project]
 name = "todo-api"
-version = "0.1.0"
+version = "0.2.0"
 description = "A small REST API for to-do tasks"
 requires-python = ">=3.10"
 
