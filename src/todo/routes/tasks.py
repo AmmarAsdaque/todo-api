@@ -27,9 +27,11 @@ def create(body: TaskIn, conn=Depends(get_conn)):
 def list_all(
     done: bool | None = None,
     q: str | None = None,
+    page: int | None = None,
+    size: int | None = None,
     conn=Depends(get_conn),
 ):
-    return tasks.list_tasks(conn, done=done, q=q)
+    return tasks.list_tasks(conn, done=done, q=q, page=page, size=size)
 
 
 @router.get("/tasks/{task_id}")

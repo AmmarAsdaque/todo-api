@@ -28,7 +28,7 @@ def get(conn, task_id):
     return to_task(row)
 
 
-def select(conn, done=None, q=None):
+def select(conn, done=None, q=None, limit=None, offset=0):
     sql = f"SELECT {COLUMNS} FROM tasks"
     where, params = [], []
     if done is not None:
@@ -40,6 +40,9 @@ def select(conn, done=None, q=None):
     if where:
         sql += " WHERE " + " AND ".join(where)
     sql += " ORDER BY id"
+    if limit is not None:
+        sql += " LIMIT ? OFFSET ?"
+        params += [limit, offset]
     return [to_task(row) for row in conn.execute(sql, params)]
 
 
