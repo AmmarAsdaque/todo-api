@@ -38,5 +38,10 @@ def page_window(page, size=None):
     return size, page * size
 
 
+def page_count(total, size):
+    """How many pages `total` tasks fill."""
+    return -(-total // size)
+
+
 def update_task(conn, task_id, fields):
     return repository.update(conn, task_id, fields)
