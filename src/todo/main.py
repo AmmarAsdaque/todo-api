@@ -3,9 +3,18 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from todo.routes import tasks as task_routes
+from todo.services.tasks import ValidationError
 
 app = FastAPI(title="todo-api", version="0.2.0")
 app.include_router(task_routes.router)
+
+
+@app.exception_handler(ValidationError)
+def validation_error(request: Request, exc: ValidationError):
+    body = {"error": exc.code}
+    if exc.field:
+        body["field"] = exc.field
+    return JSONResponse(status_code=400, content=body)
 
 
 @app.exception_handler(RequestValidationError)

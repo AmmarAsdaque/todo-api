@@ -65,3 +65,11 @@ def test_search_ignores_case(client):
     client.post("/tasks", json={"title": "Buy Milk"})
     r = client.get("/tasks", params={"q": "MILK"})
     assert len(r.json()) == 1
+
+
+def test_list_paginated(client):
+    for i in range(3):
+        client.post("/tasks", json={"title": f"Task {i}"})
+    r = client.get("/tasks", params={"page": 1, "size": 2})
+    assert r.status_code == 200
+    assert len(r.json()) <= 2
