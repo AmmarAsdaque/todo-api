@@ -16,7 +16,7 @@ pip install -r requirements.txt
 pytest -q
 ```
 
-A fresh copy reports `11 passed`.
+A fresh copy reports `12 passed`.
 
 ## Lint
 
@@ -39,7 +39,7 @@ folder you start it from (set `TODO_DB` to use another path). Migrations in
 | Method | Path | Notes |
 | --- | --- | --- |
 | POST | `/tasks` | body `{"title": "...", "priority": 1-3}`; returns 201 |
-| GET | `/tasks` | `?done=true/false`, `?q=` title search |
+| GET | `/tasks` | `?done=true/false`, `?q=` title search, `?page=&size=` |
 | GET | `/tasks/{id}` | one task |
 | PATCH | `/tasks/{id}` | any of `title`, `done`, `priority` |
 

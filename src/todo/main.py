@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from todo.routes import tasks as task_routes
 from todo.services.tasks import ValidationError
 
-app = FastAPI(title="todo-api", version="0.2.0")
+app = FastAPI(title="todo-api", version="0.3.0")
 app.include_router(task_routes.router)
 
 
