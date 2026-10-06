@@ -12,6 +12,12 @@ venv/
 .env
 .env.*
 
+# Mutation testing
+mutants/
+reports/
+.stryker-tmp/
+html/
+
 # Editors and OS
 .vscode/
 .idea/

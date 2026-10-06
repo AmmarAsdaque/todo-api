@@ -60,6 +60,18 @@ tests/               pytest
 docs/                decisions and project history
 ```
 
+## Mutation testing
+
+`[tool.mutmut]` in `pyproject.toml` is already set up for `src/todo/services/`.
+
+```bash
+pip install mutmut      # on Windows, run inside WSL: mutmut needs fork
+mutmut run
+mutmut results
+```
+
+Delete `mutants/` before a rerun.
+
 ## Project history
 
 Issues, pull requests and releases are listed in

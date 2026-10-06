@@ -15,3 +15,9 @@ extend-exclude = ["mutants"]
 
 [tool.ruff.lint]
 select = ["E", "F", "BLE"]
+
+[tool.mutmut]
+source_paths = ["src/todo/"]
+only_mutate = ["src/todo/services/*"]
+also_copy = ["migrations/"]
+pytest_add_cli_args_test_selection = ["tests/"]
