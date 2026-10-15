@@ -55,3 +55,16 @@ def update(conn, task_id, fields):
                 (*fields.values(), task_id),
             )
     return get(conn, task_id)
+
+
+# --- tags (work in progress) ---
+
+
+def add_tag(conn, task_id, name):
+    with conn:
+        conn.execute("INSERT OR IGNORE INTO tags (task_id, name) VALUES (?, ?)", (task_id, name))
+
+
+def tags_for(conn, task_id):
+    rows = conn.execute("SELECT name FROM tags WHERE task_id = ? ORDER BY name", (task_id,))
+    return [row["name"] for row in rows]
