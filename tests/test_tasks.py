@@ -73,3 +73,17 @@ def test_list_paginated(client):
     r = client.get("/tasks", params={"page": 1, "size": 2})
     assert r.status_code == 200
     assert len(r.json()) <= 2
+
+
+def test_due_date_round_trip(client):
+    r = client.post("/tasks", json={"title": "Pay rent", "due_date": "2026-11-30"})
+    assert r.status_code == 201
+    assert r.json()["due_date"] == "2026-11-30"
+    got = client.get(f"/tasks/{r.json()['id']}")
+    assert got.json()["due_date"] == "2026-11-30"
+
+
+def test_invalid_due_rejected(client):
+    r = client.post("/tasks", json={"title": "x", "due_date": "next Tuesday"})
+    assert r.status_code == 400
+    assert r.json() == {"error": "invalid_due_date", "field": "due_date"}
