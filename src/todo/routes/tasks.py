@@ -45,3 +45,11 @@ def patch(task_id: int, body: TaskPatch, conn=Depends(get_conn)):
     if "title" in fields:
         fields["title"] = fields["title"].strip()
     return tasks.update_task(conn, task_id, fields)
+
+
+@router.delete("/tasks/{task_id}")
+def delete(task_id: int, conn=Depends(get_conn)):
+    task = tasks.get_task(conn, task_id)
+    conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
+    conn.commit()
+    return {"deleted": True, "task": task}
