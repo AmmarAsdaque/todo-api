@@ -11,6 +11,7 @@ router = APIRouter()
 class TaskIn(BaseModel):
     title: str
     priority: int = Field(default=2, ge=1, le=3)
+    due_date: str | None = None
 
 
 class TaskPatch(BaseModel):
@@ -21,7 +22,7 @@ class TaskPatch(BaseModel):
 
 @router.post("/tasks", status_code=201)
 def create(body: TaskIn, conn=Depends(get_conn)):
-    return tasks.create_task(conn, body.title, body.priority)
+    return tasks.create_task(conn, body.title, body.priority, body.due_date)
 
 
 @router.get("/tasks")

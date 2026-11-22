@@ -1,6 +1,7 @@
 """Business rules for tasks. Only this layer calls the repository."""
 
 from dataclasses import dataclass
+from datetime import date
 
 from todo.repository import tasks as repository
 
@@ -14,9 +15,19 @@ class ValidationError(ValueError):  # the API turns it into 400 {"error": code, 
     field: str | None = None
 
 
-def create_task(conn, title, priority):
+def parse_due_date(value):
+    """YYYY-MM-DD or None. Anything else is a 400 (spec criterion 3)."""
+    if value is None:
+        return None
+    try:
+        return date.fromisoformat(value).isoformat()
+    except ValueError:
+        raise ValidationError("invalid_due_date", "due_date") from None
+
+
+def create_task(conn, title, priority, due_date=None):
     title = title.strip()
-    return repository.insert(conn, title, priority)
+    return repository.insert(conn, title, priority, parse_due_date(due_date))
 
 
 def get_task(conn, task_id):

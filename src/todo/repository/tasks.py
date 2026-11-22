@@ -1,6 +1,6 @@
 """SQLite access for tasks. The only module that runs SQL."""
 
-COLUMNS = "id, title, done, priority, created_at"
+COLUMNS = "id, title, done, priority, created_at, due_date"
 
 
 def to_task(row):
@@ -10,15 +10,16 @@ def to_task(row):
         "done": bool(row["done"]),
         "priority": row["priority"],
         "created_at": row["created_at"],
+        "due_date": row["due_date"],
     }
 
 
-def insert(conn, title, priority):
+def insert(conn, title, priority, due_date=None):
     with conn:
         cur = conn.execute(
-            "INSERT INTO tasks (title, priority, created_at) "
-            "VALUES (?, ?, strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))",
-            (title, priority),
+            "INSERT INTO tasks (title, priority, due_date, created_at) "
+            "VALUES (?, ?, ?, strftime('%Y-%m-%dT%H:%M:%SZ', 'now'))",
+            (title, priority, due_date),
         )
     return get(conn, cur.lastrowid)
 
