@@ -55,3 +55,9 @@ def update(conn, task_id, fields):
                 (*fields.values(), task_id),
             )
     return get(conn, task_id)
+
+
+def delete(conn, task_id):
+    with conn:
+        cur = conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
+    return cur.rowcount > 0

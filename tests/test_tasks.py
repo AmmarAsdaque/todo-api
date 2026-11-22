@@ -73,3 +73,15 @@ def test_list_paginated(client):
     r = client.get("/tasks", params={"page": 1, "size": 2})
     assert r.status_code == 200
     assert len(r.json()) <= 2
+
+
+def test_delete_task(client, task):
+    r = client.delete(f"/tasks/{task['id']}")
+    assert r.status_code == 204
+    assert r.content == b""
+
+
+def test_delete_missing_task(client):
+    r = client.delete("/tasks/9999")
+    assert r.status_code == 404
+    assert r.json() == {"error": "task_not_found"}

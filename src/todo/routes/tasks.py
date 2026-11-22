@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from todo.db import get_conn
@@ -47,9 +48,8 @@ def patch(task_id: int, body: TaskPatch, conn=Depends(get_conn)):
     return tasks.update_task(conn, task_id, fields)
 
 
-@router.delete("/tasks/{task_id}")
+@router.delete("/tasks/{task_id}", status_code=204)
 def delete(task_id: int, conn=Depends(get_conn)):
-    task = tasks.get_task(conn, task_id)
-    conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
-    conn.commit()
-    return {"deleted": True, "task": task}
+    if not tasks.delete_task(conn, task_id):
+        return JSONResponse(status_code=404, content={"error": "task_not_found"})
+    return Response(status_code=204)

@@ -45,3 +45,8 @@ def page_count(total, size):
 
 def update_task(conn, task_id, fields):
     return repository.update(conn, task_id, fields)
+
+
+def delete_task(conn, task_id):
+    """Delete a task. Returns False if there was no task with that id."""
+    return repository.delete(conn, task_id)
